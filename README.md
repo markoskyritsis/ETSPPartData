@@ -11,28 +11,40 @@ Some source code in R will also be released here periodically. The ultimate aim 
 -Variables in csv file-
 
 --graphID
+Unique ID for each graph (from 0 to 14)
 
 --participantID
+Unique ID for each participant
 
 --xCoordTour
+x-coordinates of the cities travelled, in order.
 
 --yCoordTour
+y-coordinates of the cities travelled, in order.
 
 --tourCost
+Total cost of the tour.
 
 --sdAnglesHull
+Standard Deviation of the internal angles of the hull
 
 --noAnglesHull
+Number of hull points
 
 --meanAnglesHull
+Mean of the internal angles of the hull
 
 --totalEdges
+Total number of cities
 
 --sdDist
+Standard Deviation of the distance travelled between cities
 
 --meanDist
+Mean distance travelled between cities
 
 --crossError
+Presence of crossing-avoidance error (0 = no, 1 = yes)
 
 --resultsfromNN
-
+The tour cost of the graph using the Nearest Neighbour approach
