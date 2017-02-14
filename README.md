@@ -37,14 +37,11 @@ Mean of the internal angles of the hull
 --totalEdges
 Total number of cities
 
---sdDist
-Standard Deviation of the distance travelled between cities
-
---meanDist
-Mean distance travelled between cities
-
 --crossError
 Presence of crossing-avoidance error (0 = no, 1 = yes)
 
---resultsfromNN
-The tour cost of the graph using the Nearest Neighbour approach
+--No.Cross
+Number of crossings (1, 2, >2)
+
+--onLast
+If there was one crossing, was it on the last route returning to the starting node?
