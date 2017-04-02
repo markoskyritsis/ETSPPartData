@@ -134,10 +134,87 @@ allIntersections <- function(m) {
     for (i in 1:(nrow(m)-3)) {
       for (j in (i+2):(nrow(m)-1)) {
         res <- findIntersect(m[i,1], m[(i+1),1], m[i,2], m[(i+1),2], m[(j),1], m[(j+1),1], m[(j),2], m[(j+1),2])
-        print(toString(res))
+#        print(toString(res))
         inter <- rbind(inter, res)
       }
     }
   }
   return(inter[which(inter$x != -1),])
+}
+
+
+permsTSP <- function(x,fun = NULL, ...) {
+  if (is.numeric(x) && length(x) == 1 && x > 0 && trunc(x) == 
+      x) 
+    x <- seq(x)
+  n <- length(x)
+  nofun <- is.null(fun)
+  TSPLen <- factorial(length(x))/2
+#  out <- vector("list", gamma(n + 1))
+  out <- vector("list", length = TSPLen)
+  p <- ip <- seqn <- 1:n
+  d <- rep(-1, n)
+  d[1] <- 0
+  m <- n + 1
+  p <- c(m, p, m)
+  i <- 1
+  use <- -c(1, n + 2)
+  count <- 0
+  while (m != 1 & count < TSPLen) {
+    out[[i]] <- if (nofun) 
+      x[p[use]]
+    else fun(x[p[use]], ...)
+    i <- i + 1
+    m <- n
+    chk <- (p[ip + d + 1] > seqn)
+    m <- max(seqn[!chk])
+    if (m < n) 
+      d[(m + 1):n] <- -d[(m + 1):n]
+    index1 <- ip[m] + 1
+    index2 <- p[index1] <- p[index1 + d[m]]
+    p[index1 + d[m]] <- m
+    tmp <- ip[index2]
+    ip[index2] <- ip[m]
+    ip[m] <- tmp
+    count = count + 1
+  }
+  out
+  
+}
+
+
+minPermutes <- function(m) {
+  source("TSP.R")
+  cheapest = Inf
+  selected = m
+  m1 <- permsTSP(2:nrow(m))
+  for (i in 1:length(m1)) {
+    m3 <- cbind(m[m1[[i]],1], m[m1[[i]],2])
+    m3 <- rbind(m[1,],m3)
+    m3 <- rbind(m3,m3[1,])
+    z <- calculateCost(m3)
+    if (z < cheapest) {
+      cheapest = z
+      selected = m3
+    }
+  }
+  return(selected)
+}
+
+
+allPermuteIntersects <- function(m) {
+  m1 <- permsTSP(2:nrow(m))
+  totalInters <- 0
+  print(c("Number of permutations is: ",length(m1)))
+  for (j in 1:length(m1)) {
+  m2 <- m[1,]
+  for (i in 1:nrow(m)-1)
+    m2 <- rbind(m2,m[m1[[j]][i],])
+    m2 <- rbind(m2,m2[1,])
+    totalInters <- totalInters + nrow(allIntersections(m2))
+#    plot(m2) you really don't want to do this for more than 8 nodes
+#    lines(m2)
+ # print(".")
+  }
+  return(totalInters)
 }
